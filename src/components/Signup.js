@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, AsyncStorage, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, Button, AsyncStorage, TouchableOpacity} from 'react-native';
 import Expo from 'expo';
 import axios from 'axios';
 import AuthService from '../services/AuthService';
@@ -32,9 +32,8 @@ const styles = StyleSheet.create({
 
 class LoginComponent extends React.Component {
     constructor(props){
-       super(props);
-       this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
-       this.redirectToSignup = this.redirectToSignup.bind(this);
+        super(props);
+        this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     }
 
     static navigationOptions = {
@@ -42,6 +41,7 @@ class LoginComponent extends React.Component {
     };
 
     handleFacebookLogin () {
+        let userObject = {};
         let authService = new AuthService();
         Expo.Facebook.logInWithReadPermissionsAsync(FB_APP_ID, {
             permissions: [ 'email','user_photos','user_birthday','user_gender','user_location']
@@ -54,11 +54,24 @@ class LoginComponent extends React.Component {
                 }
             })
             .then((response) => {
-                let dates = response.data.birthday.split('/');
                 let lbData = {};
+                let dates = response.data.birthday.split('/');
+                lbData.name = response.data.name;
                 lbData.email = response.data.email;
+                lbData.username = response.data.email;
                 lbData.password = `${response.data.name.substr(0,5)}${dates[1]}${dates[0]}`;
-                return authService.login(lbData);
+                lbData.picture = response.data.picture ? response.data.picture.data.url : null;
+                lbData.roles = ['student'];
+                userObject = lbData;
+                return authService.singup(lbData)
+            })
+            .then(() => {
+                let lbLogin = {
+                    email: userObject.email,
+                    password: userObject.password,
+                    ttl: -1
+                };
+                return authService.login(lbLogin);
             })
             .then((token) => {
                 return AsyncStorage.setItem('accessToken', token.data.id);
@@ -71,18 +84,17 @@ class LoginComponent extends React.Component {
             });
     }
 
-    redirectToSignup = () => {
-        this.props.navigation.navigate('Signup');
+    redirectToLogin = () => {
+        this.props.navigation.navigate('Login');
     };
-
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.label}>Welcome to the Book My Apartment App!</Text>
-                <Button onPress={this.handleFacebookLogin} title="Facebook Login" color="#4267B2"/>
-                <TouchableOpacity style={styles.redirectText} onPress={this.redirectToSignup}>
-                    <Text style={styles.clickText}>Not a member yet? Signup!</Text>
+                <Text style={styles.label}>Welcome to the Facebook SDK for React Native!</Text>
+                <Button onPress={this.handleFacebookLogin} title="Signup with Facebook" color="#4267B2"/>
+                <TouchableOpacity style={styles.redirectText} onPress={this.redirectToLogin}>
+                    <Text style={styles.clickText}>Already Signed up? Login!</Text>
                 </TouchableOpacity>
             </View>
         );
