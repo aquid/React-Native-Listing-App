@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, Button, AsyncStorage } from 'react-native';
 
-class HomeComponent extends React.Component {
+class SettingComponent extends React.Component {
     static navigationOptions = {
-        title: 'Home',
+        title: 'Setting',
         headerStyle: {
-            backgroundColor: '#f4511e',
+            backgroundColor: '#1976D2',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
             fontWeight: 'bold',
-        },
+        }
     };
 
     _signOutAsync = async () => {
@@ -21,11 +21,11 @@ class HomeComponent extends React.Component {
     render() {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>Home Screen</Text>
+                <Text>Profile Screen</Text>
                 <Button title="Actually, sign me out" onPress={this._signOutAsync} />
             </View>
         );
     }
 }
 
-export default HomeComponent;
+export default SettingComponent;

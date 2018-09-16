@@ -58,6 +58,7 @@ class LoginComponent extends React.Component {
                 let lbData = {};
                 lbData.email = response.data.email;
                 lbData.password = `${response.data.name.substr(0,5)}${dates[1]}${dates[0]}`;
+                lbData.ttl = -1;
                 return authService.login(lbData);
             })
             .then((token) => {
