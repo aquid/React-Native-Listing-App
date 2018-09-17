@@ -1,5 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "sdkVersion": "27.0.0",
+    "name": "MyListingApp",
+    "icon": "./assets/images/logo.png",
+    "description": "Checkout the latest properties on MyListingApp",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.shahwarcoder.mylistingapp"
+    },
+    "android": {
+      "package": "com.shahwarcoder.mylistingapp"
+    }
   }
 }

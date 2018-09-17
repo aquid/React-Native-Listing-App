@@ -49,7 +49,11 @@ class HomeComponent extends React.Component {
                 this.setState({
                     listData: listing.data,
                     isLoading: false,
-                    page, limit, order, orderBy,showInactive
+                    page,
+                    limit,
+                    order,
+                    orderBy,
+                    showInactive,
                 });
             })
             .catch((error) => {
@@ -59,7 +63,7 @@ class HomeComponent extends React.Component {
 
     componentDidMount() {
         this.getListingData(this.state);
-    }
+    };
 
      refresh = () => {
         this.setState({isLoading: true}, () => {
@@ -67,24 +71,28 @@ class HomeComponent extends React.Component {
         });
     };
 
+    onPressListing = () => {
+        console.log('item');
+    };
+
     _keyExtractor = (item, index) => item.id;
 
     _renderListing = ({item}) => (
-        <Card title={item.name} image={{uri: item.image}}>
+        <Card title={item.name} image={{uri: item.image}} containerStyle={{flex:1}}>
             <Text style={{marginBottom: 10}}>
-                {item.image}
+                {item.description}
             </Text>
-            {/*<Button*/}
-                {/*icon={<Icon name='code' color='#ffffff' />}*/}
-                {/*backgroundColor='#03A9F4'*/}
-                {/*buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}*/}
-                {/*title='VIEW NOW' onPress={}/>*/}
+            <Button
+                icon={<Icon name='code' color='#ffffff' />}
+                backgroundColor='#03A9F4'
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                title='BOOK NOW' onPress={this.onPressListing}/>
         </Card>
     );
 
     render() {
         return (
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center' }}>
                 <FlatList
                     data={this.state.listData}
                     extraData={this.state}
